@@ -25,5 +25,8 @@ header {
 .list-item {
     padding: 1rem;
     margin: 1rem;
+}
+
+.list-item > * {
     cursor: pointer;
 }

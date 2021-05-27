@@ -1,15 +1,26 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { useParams } from 'react-router-dom';
+
+import CssBaseline from '@material-ui/core/CssBaseline';
+
+import './SingleTodo.css'
 
 function SingleTodo({ todos }) {
     const params = useParams();
     
-    const todoInfo = todos.filter(todo => todo.id === +params.id);
+    const todoInfo = todos.find(todo => todo.id === +params.id);
+
+    if(!todoInfo) {
+        return <p>No todo found!</p>;
+    }
 
     return (
-        <Fragment>
-            {todoInfo[0].todo} - {todoInfo[0].author}
-        </Fragment>
+        <div className="single-todo-card">
+            <CssBaseline />
+
+            <h2>Task: {todoInfo.todo}</h2>
+            <p>By: {todoInfo.author}</p>
+        </div>
     )
 }
 

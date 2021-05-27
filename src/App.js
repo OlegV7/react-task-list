@@ -1,31 +1,19 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useState, useContext } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
 import Nav from './components/Nav';
 import TodoForm from './components/TodoForm';
 import TodoList from './components/TodoList';
+import Auth from './components/Auth';
+import { AuthContext } from './firebase/auth';
 
 import './App.css';
 import SingleTodo from './components/SingleTodo';
 
 function App() {
-  const [todos, setTodos] = useState([
-    {
-      todo: 'Walk the dog',
-      author: 'Oleg',
-      id: 1
-    },
-    {
-      todo: 'Take out the trash',
-      author: 'Daniel',
-      id: 2
-    },
-    {
-      todo: 'Dinner with wife',
-      author: 'Viktor',
-      id: 3
-    }
-  ]);
+  const [todos, setTodos] = useState([]);
+
+  const { currentUser } = useContext(AuthContext);
 
   const addTodoHandler = todo => setTodos(prevTodos => [todo, ...prevTodos]);
 
@@ -37,11 +25,14 @@ function App() {
 
   return (
     <Fragment>
-      <Nav />
+      { currentUser && <Nav /> }
       <main>
         <Switch>
           <Route path="/" exact>
             <Redirect to="/todos"/>
+          </Route>
+          <Route path="/auth" exact>
+            <Auth />
           </Route>
           <Route path="/add-todo">
             <TodoForm addTodo={addTodoHandler} />
