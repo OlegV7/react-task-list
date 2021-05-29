@@ -14,7 +14,7 @@ function App() {
   const [todos, setTodos] = useState([]);
 
   const { currentUser } = useContext(AuthContext);
-
+  
   const addTodoHandler = todo => setTodos(prevTodos => [todo, ...prevTodos]);
 
   const removeTodoHandler = id => {
@@ -23,25 +23,38 @@ function App() {
     setTodos(newTodoArr);
   }
 
+  // console.log(currentUser);
+
   return (
     <Fragment>
-      { currentUser && <Nav /> }
+      {currentUser && <Nav />}
       <main>
         <Switch>
           <Route path="/" exact>
-            <Redirect to="/todos"/>
+            <Redirect to={currentUser ? "/todos" : "/auth"} />
           </Route>
           <Route path="/auth" exact>
-            <Auth />
+            {
+              !currentUser ? <Auth /> : <Redirect to="/todos" /> 
+            }
           </Route>
           <Route path="/add-todo">
-            <TodoForm addTodo={addTodoHandler} />
+            {
+              currentUser ? <TodoForm addTodo={addTodoHandler} /> : <Redirect to="/auth" />
+            }
           </Route>
           <Route path="/todos" exact>
-            <TodoList todos={todos} deleteTodo={removeTodoHandler} />
+            {
+              currentUser ? <TodoList todos={todos} deleteTodo={removeTodoHandler} /> : <Redirect to="/auth" />
+            }
           </Route>
           <Route path="/todos/:id" exact>
-            <SingleTodo todos={todos} />
+            {
+              currentUser ? 
+                <SingleTodo todos={todos} />    
+              :
+                <Redirect to="/auth" />
+            }
           </Route>
           <Route path="*">
             <h2 style={{textAlign: 'center', marginTop: 50}}>Page not found. 404</h2>

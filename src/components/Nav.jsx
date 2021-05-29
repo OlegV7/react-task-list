@@ -12,7 +12,7 @@ function Nav() {
 
     const logOutHandler = async () => {
         try {
-            let res = await auth.signOut();;
+            await auth.signOut();
 
             history.replace('/auth');
         } catch(err) {

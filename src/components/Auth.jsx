@@ -1,8 +1,7 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import { auth } from '../firebase/config';
-import { AuthContext } from '../firebase/auth';
 
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -66,7 +65,7 @@ export default function SignInSide() {
   const [accEmail, setAccEmail] = useState("");
   const [accPass, setAccPass] = useState("");
 
-  const { currentUser } = useContext(AuthContext);
+  // const { currentUser } = useContext(AuthContext);
 
   const history = useHistory();
 
@@ -95,20 +94,16 @@ export default function SignInSide() {
     };
 
     try {
-      let res = null;
-
       if(isCreateAcc) {
-        res = await auth.createUserWithEmailAndPassword(accEmail, accPass);
+        await auth.createUserWithEmailAndPassword(accEmail, accPass);
       } else {
-        res = await auth.signInWithEmailAndPassword(accEmail, accPass);
+        await auth.signInWithEmailAndPassword(accEmail, accPass);
       }
 
       history.replace('/');
     } catch(err) {
       console.log(err);
     }
-
-    console.log(currentUser);
 
     setAccEmail("");
     setAccPass("");
