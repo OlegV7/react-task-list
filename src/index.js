@@ -7,11 +7,11 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import { AuthProvider }   from './firebase/auth';
 
 ReactDOM.render(
-  <AuthProvider>
     <Router>
+  <AuthProvider>
       <App />
-    </Router>
-  </AuthProvider>,
+  </AuthProvider>
+    </Router>,
   document.getElementById('root')
 );
 

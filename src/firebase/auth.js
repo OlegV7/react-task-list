@@ -9,7 +9,11 @@ export const AuthProvider = ({children}) => {
 
     useEffect(() => {
         auth.onAuthStateChanged((user) => {
-            setCurrentUser(user);
+            user
+            ? localStorage.setItem('authUser', JSON.stringify(user))
+            : localStorage.removeItem('authUser')
+
+            setCurrentUser(user)
         });
     }, []);
 

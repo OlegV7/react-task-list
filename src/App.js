@@ -1,11 +1,11 @@
-import React, { Fragment, useState, useContext } from 'react';
+import React, { Fragment, useState } from 'react'; // , useContext
 import { Redirect, Route, Switch } from 'react-router-dom';
 
 import Nav from './components/Nav';
 import TodoForm from './components/TodoForm';
 import TodoList from './components/TodoList';
 import Auth from './components/Auth';
-import { AuthContext } from './firebase/auth';
+// import { AuthContext } from './firebase/auth';
 
 import './App.css';
 import SingleTodo from './components/SingleTodo';
@@ -13,7 +13,8 @@ import SingleTodo from './components/SingleTodo';
 function App() {
   const [todos, setTodos] = useState([]);
 
-  const { currentUser } = useContext(AuthContext);
+  // const { currentUser } = useContext(AuthContext);
+  const currentUser = localStorage.getItem('authUser')
   
   const addTodoHandler = todo => setTodos(prevTodos => [todo, ...prevTodos]);
 
@@ -23,7 +24,7 @@ function App() {
     setTodos(newTodoArr);
   }
 
-  // console.log(currentUser);
+  // console.log(JSON.parse(currentUser));
 
   return (
     <Fragment>
@@ -35,7 +36,7 @@ function App() {
           </Route>
           <Route path="/auth" exact>
             {
-              !currentUser ? <Auth /> : <Redirect to="/todos" /> 
+              !currentUser ? <Auth user={currentUser} /> : <Redirect to="/todos" /> 
             }
           </Route>
           <Route path="/add-todo">
@@ -43,7 +44,7 @@ function App() {
               currentUser ? <TodoForm addTodo={addTodoHandler} /> : <Redirect to="/auth" />
             }
           </Route>
-          <Route path="/todos" exact>
+          <Route path="/todos" exact >
             {
               currentUser ? <TodoList todos={todos} deleteTodo={removeTodoHandler} /> : <Redirect to="/auth" />
             }

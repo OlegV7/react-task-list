@@ -1,10 +1,8 @@
 import React from 'react';
 import { NavLink, useHistory } from 'react-router-dom';
-
 import { auth } from '../firebase/config';
 
 import { Button } from '@material-ui/core';
-
 import classes from './Nav.module.css';
 
 function Nav() {
@@ -15,6 +13,7 @@ function Nav() {
             await auth.signOut();
 
             history.replace('/auth');
+            window.location.reload(false);
         } catch(err) {
             console.log(err);
         }

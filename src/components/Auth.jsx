@@ -59,12 +59,12 @@ const passwordValidation = pwd => {
   return true;
 };
 
-export default function SignInSide() {
+export default function SignInSide({ user }) {
   const [isCreateAcc, setIsCreateAcc] = useState(false);
 
   const [accEmail, setAccEmail] = useState("");
   const [accPass, setAccPass] = useState("");
-
+  // console.log(user)
   // const { currentUser } = useContext(AuthContext);
 
   const history = useHistory();
@@ -107,6 +107,8 @@ export default function SignInSide() {
 
     setAccEmail("");
     setAccPass("");
+
+    window.location.reload(false);
   };
 
   const changeAuthState = () => setIsCreateAcc(prevAccState => !prevAccState);
