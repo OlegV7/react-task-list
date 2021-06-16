@@ -47,8 +47,7 @@ function TodoForm({ addTodo }) {
         // Create new todo object
         const newTodo = {
             todo,
-            author: name,
-            id: Math.round(Math.random() * 1000000)
+            author: name
         }
 
         // Add todo to App State

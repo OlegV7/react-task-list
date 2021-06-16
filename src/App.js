@@ -1,30 +1,38 @@
-import React, { Fragment, useState } from 'react'; // , useContext
+import React, { Fragment } from 'react'; // , useContext, useState
 import { Redirect, Route, Switch } from 'react-router-dom';
+import { addItemFirestore } from './firestore/firestoreAdd';
+import { deleteItemFirestore } from './firestore/firestoreDelete';
 
 import Nav from './components/Nav';
 import TodoForm from './components/TodoForm';
 import TodoList from './components/TodoList';
 import Auth from './components/Auth';
-// import { AuthContext } from './firebase/auth';
 
 import './App.css';
 import SingleTodo from './components/SingleTodo';
 
 function App() {
-  const [todos, setTodos] = useState([]);
+  // Regular State
+  // const [todos, setTodos] = useState([]);
 
-  // const { currentUser } = useContext(AuthContext);
-  const currentUser = localStorage.getItem('authUser')
+  const currentUser = localStorage.getItem('authUser');
   
-  const addTodoHandler = todo => setTodos(prevTodos => [todo, ...prevTodos]);
+  const addTodoHandler = async todo => {
+    // Add to regular state
+    // setTodos(prevTodos => [todo, ...prevTodos]);
+
+    // Add to firestore
+    await addItemFirestore(todo);
+  };
 
   const removeTodoHandler = id => {
-    const newTodoArr = todos.filter(todo => todo.id !== id);
+    // Remove from regular state
+    // const newTodoArr = todos.filter(todo => todo.id !== id);
+    // setTodos(newTodoArr);
 
-    setTodos(newTodoArr);
+    // Delete from firestore
+    deleteItemFirestore(id);
   }
-
-  // console.log(JSON.parse(currentUser));
 
   return (
     <Fragment>
@@ -46,13 +54,13 @@ function App() {
           </Route>
           <Route path="/todos" exact >
             {
-              currentUser ? <TodoList todos={todos} deleteTodo={removeTodoHandler} /> : <Redirect to="/auth" />
+              currentUser ? <TodoList onDelete={removeTodoHandler} /> : <Redirect to="/auth" />
             }
           </Route>
           <Route path="/todos/:id" exact>
             {
               currentUser ? 
-                <SingleTodo todos={todos} />    
+                <SingleTodo />    
               :
                 <Redirect to="/auth" />
             }

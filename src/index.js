@@ -8,9 +8,9 @@ import { AuthProvider }   from './firebase/auth';
 
 ReactDOM.render(
     <Router>
-  <AuthProvider>
-      <App />
-  </AuthProvider>
+      <AuthProvider>
+          <App />
+      </AuthProvider>
     </Router>,
   document.getElementById('root')
 );
